@@ -1,5 +1,5 @@
 //$Id$
-package com.docable.model;
+package com.docable.todo.model;
 
 import java.io.Serializable;
 

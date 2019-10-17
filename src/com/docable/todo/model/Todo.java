@@ -11,9 +11,8 @@ public class Todo implements Serializable {
 	private static final long serialVersionUID = 1432422662325930475L;
 	private Long todoId;
 	private String todo;
-	private Long addedBy;
 	private boolean done;
-	private Long channelId;
+	private String channelId;
 
 	public Long getTodoId() {
 		return todoId;
@@ -31,14 +30,6 @@ public class Todo implements Serializable {
 		this.todo = todo;
 	}
 
-	public Long getAddedBy() {
-		return addedBy;
-	}
-
-	public void setAddedBy(Long addedBy) {
-		this.addedBy = addedBy;
-	}
-
 	public boolean isDone() {
 		return done;
 	}
@@ -47,11 +38,11 @@ public class Todo implements Serializable {
 		this.done = done;
 	}
 
-	public Long getChannelId() {
+	public String getChannelId() {
 		return channelId;
 	}
 
-	public void setChannelId(Long channelId) {
+	public void setChannelId(String channelId) {
 		this.channelId = channelId;
 	}
 
@@ -67,7 +58,6 @@ public class Todo implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("Todo[id=%d,todo=%s,AddedBy=%s,Done=%s,ChannelId=%s]", todoId, todo, addedBy, done,
-				channelId);
+		return String.format("Todo[id=%d,todo=%s,Done=%s,ChannelId=%s]", todoId, todo, done, channelId);
 	}
 }

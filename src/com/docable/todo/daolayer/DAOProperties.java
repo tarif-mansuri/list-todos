@@ -19,6 +19,9 @@ public class DAOProperties {
 		if (propertiesFile == null) {
 			throw new CustomException("Properties file '" + PROPERTIES_FILE + "' is missing in classpath.");
 		}
+		else{
+			System.out.println("DAO Properties file is in Path");
+		}
 
 		try {
 			PROPERTIES.load(propertiesFile);

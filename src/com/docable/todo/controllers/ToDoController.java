@@ -48,14 +48,15 @@ public class ToDoController extends HttpServlet {
 		}
 		String data = buffer.toString();
 		String task = TodoService.getTaskName(request.getRequestURI());
-		if (task.equals("addtodo.do")) {// add todo
+		if (task.equals("addtodo.do")) {
+			// add todo
 			String addedTask = TodoService.addTodo(data);
 			response.setStatus(200);
 			response.setContentType("text/xml");
 			PrintWriter writer = response.getWriter();
 			writer.append("Added TODO for \" "+addedTask+"\"");
 		} else if (task.equals("listtodos.do")) {
-			//TodoService.printPayLoad(data);
+			//List all todos
 			List<String> tasks = TodoService.fetchAlltodos(data);
 			response.setStatus(200);
 			response.setContentType("text/xml");
@@ -68,7 +69,6 @@ public class ToDoController extends HttpServlet {
 			}
 		} else {
 			// mark todo inactive
-			//System.out.println("Marking todo List");
 			TodoService.printPayLoad(data);
 			String markedTask = TodoService.markTodo(data);
 			response.setStatus(200);
@@ -81,20 +81,6 @@ public class ToDoController extends HttpServlet {
 				writer.append("Todo does not exists\n");
 			}
 		}
-		/*
-		 * StringBuilder buffer = new StringBuilder(); BufferedReader reader =
-		 * request.getReader(); String line; while ((line = reader.readLine())
-		 * != null) { buffer.append(line); } String data = buffer.toString();
-		 * TodoService.servInsertIntoTodos(data);
-		 * 
-		 * 
-		 * response.getWriter().append("Served at: ").append(request.
-		 * getContextPath()); response.setStatus(200);
-		 * response.setContentType("text/xml"); PrintWriter
-		 * writer=response.getWriter(); writer.append("  this is 200\n");
-		 * writer.append("  this is 200\n"); writer.append("  this is 200\n");
-		 * writer.append("  this is 200\n");
-		 */
 	}
 
 	/**

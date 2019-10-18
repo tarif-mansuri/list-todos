@@ -3,9 +3,7 @@ package com.docable.todo.controllers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,11 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.docable.todo.daolayer.DAOFactory;
 import com.docable.todo.servicelayer.TodoService;
+import com.docable.todo.serviceutils.ServiceUtils;
 
 /**
  * Servlet implementation class ToDoController
@@ -47,37 +43,36 @@ public class ToDoController extends HttpServlet {
 			buffer.append(line);
 		}
 		String data = buffer.toString();
-		String task = TodoService.getTaskName(request.getRequestURI());
+		String task = ServiceUtils.getTaskName(request.getRequestURI());
 		if (task.equals("addtodo.do")) {
 			// add todo
 			String addedTask = TodoService.addTodo(data);
 			response.setStatus(200);
 			response.setContentType("text/xml");
 			PrintWriter writer = response.getWriter();
-			writer.append("Added TODO for \" "+addedTask+"\"");
+			writer.append("Added TODO for \" " + addedTask + "\"");
 		} else if (task.equals("listtodos.do")) {
-			//List all todos
+			// List all todos
 			List<String> tasks = TodoService.fetchAlltodos(data);
 			response.setStatus(200);
 			response.setContentType("text/xml");
 			PrintWriter writer = response.getWriter();
-			if(tasks.isEmpty()){
+			if (tasks.isEmpty()) {
 				writer.append("No TODOs\n");
-			}else
-			for (String todo : tasks) {
-				writer.append(todo+"\n");
-			}
+			} else
+				for (String todo : tasks) {
+					writer.append(todo + "\n");
+				}
 		} else {
 			// mark todo inactive
-			TodoService.printPayLoad(data);
+			ServiceUtils.printPayLoad(data);
 			String markedTask = TodoService.markTodo(data);
 			response.setStatus(200);
 			response.setContentType("text/xml");
 			PrintWriter writer = response.getWriter();
-			if(markedTask!=null){
-				writer.append("Removed TODO for \""+markedTask+"\"\n");
-			}
-			else{
+			if (markedTask != null) {
+				writer.append("Removed TODO for \"" + markedTask + "\"\n");
+			} else {
 				writer.append("Todo does not exists\n");
 			}
 		}

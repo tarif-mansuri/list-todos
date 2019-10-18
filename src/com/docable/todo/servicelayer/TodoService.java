@@ -12,14 +12,15 @@ import java.util.regex.Pattern;
 import com.docable.todo.daolayer.DAOFactory;
 import com.docable.todo.daolayer.TodoDAO;
 import com.docable.todo.model.Todo;
+import com.docable.todo.serviceutils.ServiceUtils;
 
 public class TodoService {
 	public static String addTodo(String data) {
-		HashMap<String, String> parsedDataMap = parsePayLoad(data);
+		HashMap<String, String> parsedDataMap = ServiceUtils.parsePayLoad(data);
 
 		String channelId = parsedDataMap.get("channel_id");
 		String todoText = parsedDataMap.get("text");
-		todoText = parseString(todoText);
+		todoText = ServiceUtils.parseString(todoText);
 
 		// Obtain DAOFactory.
 		DAOFactory docable = DAOFactory.getInstance("docable.jdbc");
@@ -39,18 +40,8 @@ public class TodoService {
 		return todoText;
 	}
 
-	private static String parseString(String todoText) {
-		todoText = todoText.replaceAll("%2C", ",");
-		todoText = todoText.replaceAll("[+]", " ");
-		todoText = todoText.replaceAll("%27", "'");
-		todoText = todoText.replaceAll("%22", "\"");
-		todoText = todoText.replaceAll("%26", "&");
-		todoText = todoText.replaceAll("%3F", "?");
-		return todoText;
-	}
-
 	public static List<String> fetchAlltodos(String data) {
-		HashMap<String, String> parsedDataMap = parsePayLoad(data);
+		HashMap<String, String> parsedDataMap = ServiceUtils.parsePayLoad(data);
 
 		String channelId = parsedDataMap.get("channel_id");
 		// Obtain DAOFactory.
@@ -68,10 +59,10 @@ public class TodoService {
 	}
 
 	public static String markTodo(String data) {
-		HashMap<String, String> parsedDataMap = parsePayLoad(data);
+		HashMap<String, String> parsedDataMap = ServiceUtils.parsePayLoad(data);
 		String channelId = parsedDataMap.get("channel_id");
 		String todoText = parsedDataMap.get("text");
-		todoText = parseString(todoText);
+		todoText = ServiceUtils.parseString(todoText);
 
 		// Obtain DAOFactory.
 		DAOFactory docable = DAOFactory.getInstance("docable.jdbc");
@@ -83,31 +74,5 @@ public class TodoService {
 			return todoText;
 		}
 		return null;
-	}
-
-	public static void printPayLoad(String payLod) throws IOException {
-		System.out.println("DATA:" + payLod);
-		HashMap<String, String> payLoadMap = parsePayLoad(payLod);
-		for (Entry<String, String> entry : payLoadMap.entrySet()) {
-			System.out.println(entry.getKey() + ":      " + entry.getValue());
-		}
-		return;
-	}
-
-	private static HashMap<String, String> parsePayLoad(String payLod) {
-		String[] parsedString = payLod.split("&");
-		HashMap<String, String> map = new HashMap<>();
-		for (int i = 0; i < parsedString.length; i++) {
-			String[] keyPair = parsedString[i].split("=");
-			if (keyPair.length == 2) {
-				map.put(keyPair[0], keyPair[1]);
-			}
-		}
-		return map;
-	}
-
-	public static String getTaskName(String requestURI) {
-		String[] uriPieces = requestURI.split("/");
-		return uriPieces[uriPieces.length - 1];
 	}
 }
